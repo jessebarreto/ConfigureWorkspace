@@ -15,6 +15,7 @@
 # * Add Spotify to Listen to music while working
 # * Add Vivado and SDK 17 Shortcuts
 # * Add Quartus 17.0.2 Installation
+# * Add USB Rules to give access to devices via USB by non-sudo programs
 ####################################################################
 
 ###
@@ -281,9 +282,14 @@ cd Quartus-lite-17
 sudo ./setup.sh
 cd ..
 sudo rm -Rf Quartus-lite-17 # Clean the garbage
+sudo touch /etc/profile.d/quartus_settings.sh
+echo "# Quartus 17.0.2" | sudo tee --append /etc/profile.d/quartus_settings.sh
+echo "export PATH=$PATH:/opt/intelFPGA/17.0/embedded/host_tools/altera/preloadergen:/opt/intelFPGA_lite/17.0/quartus/bin:/opt/intelFPGA_lite/17.0/quartus/sopc_builder/bin" | sudo tee --append /etc/profile.d/quartus_settings.sh
+echo 'export QSYS_ROOTDIR="/opt/intelFPGA_lite/17.0/quartus/sopc_builder/bin"' | sudo tee --append /etc/profile.d/quartus_settings.sh
+echo 'export QUARTUS_ROOTDIR="/opt/intelFPGA_lite/17.0/quartus"' | sudo tee --append /etc/profile.d/quartus_settings.sh
+sudo chmod +x /etc/profile.d/quartus_settings.sh
 echo "# Quartus 17.0.2" >> ~/.bashrc
-echo "export PATH=$PATH:/opt/intelFPGA_lite/17.0/quartus/bin" >> ~/.bashrc
-echo 'export QSYS_ROOTDIR="/opt/intelFPGA_lite/17.0/quartus/sopc_builder/bin"' >> ~/.bashrc
+echo "source /etc/profile.d/quartus_settings.sh" >> ~/.bashrc
 echo " " >> ~/.bashrc
 # USB-Blaster Cable Driver
 sudo touch /etc/udev/rules.d/51-altera-usb-blaster.rules
@@ -307,5 +313,15 @@ sudo apt-get install libfontconfig1:i386 libfreetype6:i386 libgl1-mesa-glx:i386 
 wget http://download.altera.com/akdlm/software/acdsinst/17.0std/595/ib_installers/SoCEDSSetup-17.0.0.595-linux.run
 chmod +x SoCEDSSetup-17.0.0.595-linux.run
 sudo ./SoCEDSSetup-17.0.0.595-linux.run
-# If DS-5 do not install run it apart
+# If DS-5 do not install, run it apart
 echo -e "\e[32m[OK] SoC Embedded Design Suite	....  \e[0m"
+
+###
+# Give permission to users to access USB-Serial devices connected to this machine without super user permission
+# With great powers come great responsabilities
+# Give user access to USB-SERIAL devices connected to this computer
+echo -e "\e[33mGiving User Access to USB Devices	...\e[0m"
+sudo touch /etc/udev/rules.d/50-system_usb.rules
+echo 'KERNEL=="ttyUSB[0-9]*",MODE="0666"' | sudo tee --append /etc/udev/rules.d/50-system_usb.rules
+echo 'KERNEL=="ttyACM[0-9]*",MODE="0666"' | sudo tee --append /etc/udev/rules.d/50-system_usb.rules
+echo -e "\e[32m[OK]	User Access to USB Devices	....  \e[0m"
