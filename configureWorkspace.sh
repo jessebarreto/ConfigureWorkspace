@@ -16,6 +16,9 @@
 # * Add Vivado and SDK 17 Shortcuts
 # * Add Quartus 17.0.2 Installation
 # * Add USB Rules to give access to devices via USB by non-sudo programs
+# * Add Telegram
+# * Add Quartus Shortcut
+# * Add Mendeley
 ####################################################################
 
 ###
@@ -38,12 +41,12 @@ echo -e "\e[32m[OK] Essential Stuff \e[0m"
 ###
 # Install Oh-My-Zsh
 echo -e "\e[33Getting Oh-My-Zsh ...\e[0m"
-sudo apt-get install zsh -y
-sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
-echo " " >> ~/.bashrc
-echo "# Initialize Oh-My-Zsh" >> ~/.bashrc
-echo "zsh" >> ~/.bashrc
-echo " " >> ~/.bashrc
+# sudo apt-get install zsh -y
+# sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+# echo " " >> ~/.bashrc
+# echo "# Initialize Oh-My-Zsh" >> ~/.bashrc
+# echo "zsh" >> ~/.bashrc
+# echo " " >> ~/.bashrc
 echo -e "\e[33Oh-My-Zsh ...\e[0m"
 
 ###
@@ -155,6 +158,7 @@ cd ffmpeg-3.0.4
 make -j4
 sudo make install
 make distclean
+sudo rm -R *
 echo -e "\e[32m[OK] FFMpeg 3.0.2 \e[0m"
 
 ###
@@ -211,11 +215,13 @@ sudo apt-get install spotify-client -y
 echo -e "\e[32m[OK] Spotify  \e[0m"
 
 ###
-# Download Qt Creator
-echo -e "\e[33mDownloading Qt 5.6.2 installer 	...\e[0m"
+# Install Qt Creator
+echo -e "\e[33mInstall Qt 5.6.2 installer 	...\e[0m"
 cd ~/libs/
 wget http://download.qt.io/official_releases/qt/5.6/5.6.2/qt-opensource-linux-x64-5.6.2.run
-echo -e "\e[32m[OK] Download Qt 5.6.2 ....  \e[0m"
+sudo chmod +x qt-opensource-linux-x64-5.6.2.run
+sudo ./qt-opensource-linux-x64-5.6.2.run
+echo -e "\e[32m[OK] Install Qt 5.6.2 ....  \e[0m"
 
 ###
 # Additional Libraries Vivado 2017.2 at Ubuntu-like distro Lubuntu 16
@@ -291,6 +297,18 @@ sudo chmod +x /etc/profile.d/quartus_settings.sh
 echo "# Quartus 17.0.2" >> ~/.bashrc
 echo "source /etc/profile.d/quartus_settings.sh" >> ~/.bashrc
 echo " " >> ~/.bashrc
+# Create ShortCut
+sudo touch /usr/share/applications/quartus2017.desktop
+echo '[Desktop Entry]' |  usdo tee -append /usr/share/applications/quartus2017.desktop
+echo 'Type=Application' |  usdo tee -append /usr/share/applications/quartus2017.desktop
+echo 'Version=0.9.4' |  usdo tee -append /usr/share/applications/quartus2017.desktop
+echo 'Name=Quartus (Quartus Prime 17.0) Lite Edition' |  usdo tee -append /usr/share/applications/quartus2017.desktop
+echo 'Comment=Quartus (Quartus Prime 17.0)' |  usdo tee -append /usr/share/applications/quartus2017.desktop
+echo 'Icon=/opt/intelFPGA_lite/17.0/quartus/adm/quartusii.png' |  usdo tee -append /usr/share/applications/quartus2017.desktop
+echo 'Exec=/opt/intelFPGA_lite/17.0/quartus/bin/quartus --64bit' |  usdo tee -append /usr/share/applications/quartus2017.desktop
+echo 'Terminal=false' |  usdo tee -append /usr/share/applications/quartus2017.desktop
+echo 'Categories=Development;IDE;' |  usdo tee -append /usr/share/applications/quartus2017.desktop
+echo 'Path=/opt/intelFPGA_lite/17.0' |  usdo tee -append /usr/share/applications/quartus2017.desktop
 # USB-Blaster Cable Driver
 sudo touch /etc/udev/rules.d/51-altera-usb-blaster.rules
 echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="09fb", ATTR{idProduct}=="6001", MODE="0666"' | sudo tee --append /etc/udev/rules.d/51-altera-usb-blaster.rules
@@ -325,3 +343,26 @@ sudo touch /etc/udev/rules.d/50-system_usb.rules
 echo 'KERNEL=="ttyUSB[0-9]*",MODE="0666"' | sudo tee --append /etc/udev/rules.d/50-system_usb.rules
 echo 'KERNEL=="ttyACM[0-9]*",MODE="0666"' | sudo tee --append /etc/udev/rules.d/50-system_usb.rules
 echo -e "\e[32m[OK]	User Access to USB Devices	....  \e[0m"
+
+###
+# Install Telegram
+echo -e "\e[33mGetting Telegram	...\e[0m"
+sudo add-apt-repository ppa:atareao/telegram
+sudo apt-get update
+sudo apt-get install telegram -y
+echo -e "\e[32m[OK] Telegram	....  \e[0m"
+
+###
+# Install Mendeley
+echo -e "\e[33mGetting Mendeley	...\e[0m"
+cd ~/libs/
+sudo wget https://www.mendeley.com/repositories/ubuntu/stable/amd64/mendeleydesktop-latest
+sudo dpkg -i mendeleydesktop-latest
+sudo apt-get update
+sudo apt-get install mendeleydesktop -y
+echo -e "\e[32m[OK] Mendeley	....  \e[0m"
+
+###
+# Clean everything
+cd ~/libs/
+rm -R *
