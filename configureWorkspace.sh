@@ -19,6 +19,7 @@
 # * Add Telegram
 # * Add Quartus Shortcut
 # * Add Mendeley
+# * Add Pulse Audio to fix laptop audio problem
 ####################################################################
 
 ###
@@ -36,6 +37,8 @@ sudo apt-get install mesa-utils -y
 sudo apt-get install gdebi -y
 sudo apt-get install gnome-schedule -y
 sudo apt-get install subversion autoconf exifprobe automake build-essential libass-dev libfreetype6-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev gdb pkg-config texinfo zlib1g-dev htop -y
+# For better audio control
+sudo apt-get install pulseaudio pavucontrol -y 
 echo -e "\e[32m[OK] Essential Stuff \e[0m"
 
 ###
@@ -293,6 +296,7 @@ echo "# Quartus 17.0.2" | sudo tee --append /etc/profile.d/quartus_settings.sh
 echo "export PATH=$PATH:/opt/intelFPGA/17.0/embedded/host_tools/altera/preloadergen:/opt/intelFPGA_lite/17.0/quartus/bin:/opt/intelFPGA_lite/17.0/quartus/sopc_builder/bin" | sudo tee --append /etc/profile.d/quartus_settings.sh
 echo 'export QSYS_ROOTDIR="/opt/intelFPGA_lite/17.0/quartus/sopc_builder/bin"' | sudo tee --append /etc/profile.d/quartus_settings.sh
 echo 'export QUARTUS_ROOTDIR="/opt/intelFPGA_lite/17.0/quartus"' | sudo tee --append /etc/profile.d/quartus_settings.sh
+echo 'export SOCEDS_DEST_ROOT="/opt/intelFPGA/17.0/embedded"' | sudo tee --append /etc/profile.d/quartus_settings.sh
 sudo chmod +x /etc/profile.d/quartus_settings.sh
 echo "# Quartus 17.0.2" >> ~/.bashrc
 echo "source /etc/profile.d/quartus_settings.sh" >> ~/.bashrc
@@ -325,6 +329,7 @@ echo -e "\e[32m[OK] Quartus 17.0.2	....  \e[0m"
 # Install SoC Embedded Design Suite
 echo -e "\e[33mGetting SoC Embedded Design Suite	...\e[0m"
 cd ~/libs/
+sudo apt-get install lib32z1 lib32ncurses5 -y
 sudo apt-get install xterm libfontconfig1-dev libfreetype6-dev libice-dev libusb-dev libsm-dev libx11-dev libxcursor-dev libxext-dev libxft-dev libxmu-dev libxrandr-dev libxrender-dev -y
 sudo apt-get install libwebkit-dev libwebkitgtk-dev -y
 sudo apt-get install libfontconfig1:i386 libfreetype6:i386 libgl1-mesa-glx:i386 libgl1-mesa-dri:i386 libice6:i386 libsm6:i386 libusb-0.1-4:i386 libx11-6:i386 libxcursor1:i386 libxext6:i386 libxft2:i386 libxmu6:i386 libxrandr2:i386 libxrender1:i386 -y
@@ -361,6 +366,12 @@ sudo dpkg -i mendeleydesktop-latest
 sudo apt-get update
 sudo apt-get install mendeleydesktop -y
 echo -e "\e[32m[OK] Mendeley	....  \e[0m"
+
+###
+# Install Skype
+cd ~/libs/
+sudo wget https::/repo.skype.com/latest/
+
 
 ###
 # Clean everything
