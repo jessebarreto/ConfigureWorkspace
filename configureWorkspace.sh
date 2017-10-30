@@ -277,6 +277,12 @@ echo 'StartupNotify=true' | sudo tee --append /usr/share/applications/sdk2017.de
 echo "# Source Vivado 2017" >> ~/.bashrc
 echo "source /opt/Xilinx/SDK/2017.2/settings64.sh" >> ~/.bashrc
 echo " " >> ~/.bashrc
+cd ~/libs/
+wget https://github.com/Digilent/vivado-boards/archive/master.zip 
+unzip master.zip
+cp -r vivado-boards-master/new/board_files/* /opt/Xilinx/Vivado/2017.2/data/boards/board_files/* 
+rm master.zip
+rm -rf vivado-boards-master
 echo -e "\e[32m[OK] Additional Vivado 16 Packages....  \e[0m"
 
 ###
@@ -371,6 +377,24 @@ echo -e "\e[32m[OK] Mendeley	....  \e[0m"
 # Install Skype
 cd ~/libs/
 sudo wget https::/repo.skype.com/latest/
+
+###
+# Install NVidia Drivers
+sudo wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.69/NVIDIA-Linux-x86_64-384.69.run
+sudo chmod +x NVIDIA-Linux-x86_64-384.69.run
+
+##
+# Install Haskel Compiler and Make
+cd ~/libs/
+sudo apt-get update
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository -y ppa:hvr/ghc
+sudo apt-get update
+sudo apt-get install -y cabal-install-1.22 ghc-7.10.3
+cat >> ~/.bashrc <<EOF
+export PATH="\$HOME/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.10.3/bin:\$PATH"
+EOF
+export PATH=~/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.10.3/bin:$PATH
 
 
 ###
