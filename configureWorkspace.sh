@@ -29,6 +29,10 @@ mkdir libs
 cd ~/libs/
 
 ###
+# Set time based on the internet
+sudo date -s "$(wget -qSO- --max-redirect=0 google.com 2>&1 | grep Date: | cut -d' ' -f5-8)Z"
+
+###
 # Updating Headers and Essential Libs
 echo -e "\e[33mGetting Essential Stuff ...\e[0m"
 sudo apt-get update -y
